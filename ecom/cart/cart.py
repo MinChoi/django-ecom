@@ -16,7 +16,7 @@ class Cart():
 
     def add(self, product, quantity):
         product_id = str(product.id)
-        product_quantity = str(quantity)
+        product_quantity = int(quantity)
         if product_id in self.cart:
             # ??
             self.cart[product_id] = int(product_quantity)
@@ -42,3 +42,11 @@ class Cart():
     def get_quantities(self):
         quantities = self.cart
         return quantities
+
+    def update(self, product, quantity):
+        product_id = int(product)
+        product_quantity = int(quantity)
+
+        self.cart[product_id] = product_quantity
+        self.session.modified = True
+        return self.cart
