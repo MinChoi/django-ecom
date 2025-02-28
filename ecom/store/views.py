@@ -68,10 +68,11 @@ def category(request, category_name):
     try:
         category_selected = Category.objects.get(name=category_name)
         products = Product.objects.filter(category= category_selected)
-        return render(request, 'category.html', {'products':products})
+        return render(request, 'category.html', {'products':products, 'category': category_selected})
     except:
         messages.warning(request, ('Category doesn\'t exist!'))
         return redirect('home')
 
-    product = Product.objects.get(id=pk)
-    return render(request, 'product.html', {'product':product})
+    # ??
+    products = Product.objects.get(id=pk)
+    return render(request, 'category.html', {'product':products, 'category':category})
