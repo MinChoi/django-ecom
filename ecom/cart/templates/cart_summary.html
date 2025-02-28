@@ -34,6 +34,26 @@
                             {% else %}
                                 ${{ product.price }}
                             {% endif %}
+                          <br><br>
+                          <div class="row">
+                              <div class="col-md-2">Quantity:</div>
+                              <div class="col-md-2">
+
+                                <select class="form-select" id="qty-cart">
+                                    {% for key, value in quantities.items %}
+                                      {% if key == product.id|slugify %}
+                                        <option selected="selected" value="{{ value }}">{{ value }}</option>
+                                      {% endif %}
+                                    {% endfor %}
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                              </div>
+                          </div>
+                          <br><br>
 
 
                           </div>

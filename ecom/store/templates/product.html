@@ -29,8 +29,19 @@
                         {% else %}
                             ${{ product.price }}
                         {% endif %}
-
-
+                          <br><br>
+                          <div class="row">
+                              <div class="col-md-2">Quantity:</div>
+                              <div class="col-md-2">
+                                <select class="form-select" id="qty-cart">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                              </div>
+                          </div>
                           <br><br>
                           <button type="button" value="{{ product.id}}" class="btn btn-secondary" id="add-cart">Add to cart</button>
                           <br><br>
@@ -50,6 +61,7 @@ $(document).on('click', '#add-cart', function(e){
         url: '{% url 'cart_add' %}',
         data: {
             product_id: $('#add-cart').val(),
+            product_qty: $('#qty-cart option:selected').text(),
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
