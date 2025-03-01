@@ -14,7 +14,7 @@
         <!-- Section-->
         <div class="container px-4 px-lg-5 mt-5">
 
-            {% if cart_products is None %}
+            {% if not cart_products %}
                 <h3>There is nothing in cart</h3>
             {% else %}
                 {% for product in cart_products %}
@@ -55,6 +55,7 @@
                           </div>
                           <br><br>
                             <button type="button" data-index="{{ product.id }}" class="btn btn-secondary update-cart">Update</button>
+                            <button type="button" data-index="{{ product.id }}" class="btn btn-danger delete-product">Delete</button>
                           </div>
                         </div>
                       </div>
@@ -78,6 +79,28 @@ $(document).on('click', '.update-cart', function(e){
         data: {
             product_id: product_id,
             product_qty: $("#select-" + product_id + ' option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function(json) {
+            location.reload();
+        },
+        error: function(xhr, errmsg, err) {
+
+        }
+    });
+});
+
+$(document).on('click', '.delete-product', function(e){
+    e.preventDefault();
+
+    var product_id = $(this).data('index')
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_delete' %}',
+        data: {
+            product_id: product_id,
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
