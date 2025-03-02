@@ -8,13 +8,6 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
 
-                        {% if request.user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                        {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                        {%  endif %}
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Categories
@@ -35,6 +28,16 @@
 <!--                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>-->
                             </ul>
                         </li>
+
+
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'update_user' %}">Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                        {%  endif %}
+
                     </ul>
                     <form class="d-flex">
                         <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark">                            <i class="bi-cart-fill me-1"></i>
