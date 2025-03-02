@@ -66,14 +66,7 @@ $(document).on('click', '#add-cart', function(e){
             action: 'post'
         },
         success: function(json) {
-
-            console.log(json);
-            console.log(json.qty);
-            console.log(json['qty']);
-
-
-                        // console.log(json)
-            $('#cart_quantity').html(json.qty);
+            location.reload();
         },
         error: function(xhr, errmsg, err) {
 
