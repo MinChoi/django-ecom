@@ -56,6 +56,7 @@ def register_user(request):
             return redirect('home')
         else:
             messages.warning(request, ('Register fail!'))
+    return render(request, 'register.html')
 
 
 def product(request, pk):
@@ -76,3 +77,9 @@ def category(request, category_name):
     # ??
     products = Product.objects.get(id=pk)
     return render(request, 'category.html', {'product':products, 'category':category})
+
+def category_summary(request):
+    categories = Category.objects.all()
+
+    return render(request, 'category_summary.html', {'categories':categories})
+
