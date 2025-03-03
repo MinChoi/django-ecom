@@ -1,3 +1,5 @@
+from pydoc import describe
+
 from django.shortcuts import render, redirect
 from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django import forms
+from django.db.models import Q
 
 def home(request):
     products = Product.objects.all()
@@ -133,3 +136,19 @@ def update_info(request):
     else:
         messages.warning(request, ('Login first!'))
         return redirect('home')
+
+
+def search(request):
+    if request.method == "POST":
+        search_text = request.POST.get('search')
+
+        search_products = Product.objects.filter(
+            Q(name__icontains=search_text)
+            | Q(description__icontains=search_text)
+        )
+
+        if not search_products:
+            messages.warning(request, "No products are found")
+
+        return render(request, 'search.html', {'search_products':search_products})
+    return render(request, 'search.html', {})
