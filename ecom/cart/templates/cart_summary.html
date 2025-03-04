@@ -63,7 +63,10 @@
 
                 {% endfor %}
 
-                Total: ${{ total }}
+            <div align="right">
+                <h3>Total: ${{ total }}</h3>
+                <a href="{% url 'checkout'  %}" class="btn btn-secondary">Checkout</a>
+            </div>
 
             {% endif %}
             <br><br>
