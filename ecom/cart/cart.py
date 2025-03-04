@@ -16,6 +16,25 @@ class Cart():
 
         self.cart = cart
 
+    def db_add(self, product, quantity):
+        product_id = str(product)
+        product_quantity = int(quantity)
+        if product_id in self.cart:
+            # ??
+            pass
+        else:
+            # self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_quantity)
+        self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            # get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            current_user.update(old_cart=str(carty))
+
+
     def add(self, product, quantity):
         product_id = str(product.id)
         product_quantity = int(quantity)
@@ -70,11 +89,19 @@ class Cart():
         return quantities
 
     def update(self, product, quantity):
-        product_id = int(product)
+        product_id = str(product)
         product_quantity = int(quantity)
 
         self.cart[product_id] = product_quantity
         self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            # get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            current_user.update(old_cart=str(carty))
+
         return self.cart
 
 
@@ -85,4 +112,12 @@ class Cart():
             del self.cart[product_id]
 
         self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            # get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            current_user.update(old_cart=str(carty))
+
         return self.cart
