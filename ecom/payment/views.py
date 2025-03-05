@@ -1,9 +1,43 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from cart.cart import Cart
+from django.contrib.auth.models import User
 from .form import ShippingForm, PaymentForm
-from .models import ShippingAddress
+from .models import ShippingAddress, Order, OrderItem
 
+def process_order(request):
+    if request.POST:
+
+        cart = Cart(request)
+        # cart_products = cart.get_prods()
+        # quantities = cart.get_quantities()
+        total = cart.cart_total()
+
+        payment_form = PaymentForm(request.POST or None)
+
+        my_shipping = request.session.get('my_shipping')
+
+        full_name = my_shipping['shipping_full_name']
+        email = my_shipping['shipping_email']
+        shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
+        amount_paid = total
+
+        if request.user.is_authenticated:
+            user = request.user
+
+            new_order = Order(user=user, full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
+            new_order.save()
+
+        else:
+            new_order = Order(full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
+            new_order.save()
+
+        messages.success(request, "Order Placed!")
+        return redirect('home')
+
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
 
 
 def billing_info(request):
@@ -13,6 +47,9 @@ def billing_info(request):
         cart_products = cart.get_prods()
         quantities = cart.get_quantities()
         total = cart.cart_total()
+
+        my_shipping = request.POST
+        request.session['my_shipping'] = my_shipping
 
         # check if user is logged in
         if request.user.is_authenticated:
