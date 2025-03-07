@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Orders</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Welcome to Seabrook</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-8">
+
+                    <div class="card">
+                      <div class="card-header">
+                        {{ order }} - ${{ order.amount_paid}}
+                      </div>
+                      <div class="card-body">
+
+                          Email: {{ order.email }}<br>
+                          {% if order.date_shipped %}
+                            Date Shipped: {{ order.date_shipped }}<br>
+                          {% endif %}
+                          Date Ordered: {{ order.date_ordered }}<br>
+                          <br>
+                          Full Name: {{ order.full_name }}<br>
+                          Shipping Address: <pre>{{ order.shipping_address }}</pre><br>
+
+                          <hr>
+                          Order Items:<br>
+                          <hr>
+                          {% for item in items %}
+                            {{ item.product }} - quantity: {{ item.quantity }} - ${{ item.price }}
+                          {% endfor %}
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br><br><br>
+
+{% endblock contents %}
