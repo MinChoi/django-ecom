@@ -29,13 +29,28 @@
                           <br>
                           Full Name: {{ order.full_name }}<br>
                           Shipping Address: <pre>{{ order.shipping_address }}</pre><br>
-
                           <hr>
                           Order Items:<br>
                           <hr>
                           {% for item in items %}
                             {{ item.product }} - quantity: {{ item.quantity }} - ${{ item.price }}
+                            <br>
                           {% endfor %}
+                          <hr>
+                          <br><br>
+                          {% if not order.shipped %}
+                          <form method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" name="shipping_status" value="true">
+                              <button type="submit" class="btn btn-primary">Make as shipped</button>
+                          </form>
+                          {% else %}
+                          <form method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" name="shipping_status" value="false">
+                              <button type="submit" class="btn btn-danger">Make as NOT shipped</button>
+                          </form>
+                          {% endif %}
                       </div>
                     </div>
 

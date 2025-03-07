@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .form import ShippingForm, PaymentForm
 from .models import ShippingAddress, Order, OrderItem
 from store.models import Product
+import datetime
 
 def process_order(request):
     if request.POST:
@@ -129,6 +130,14 @@ def payment_success(request):
 
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
+
+        if request.POST:
+            _order_id = request.POST['order_id']
+            now = datetime.datetime.now()
+            _order = Order.objects.filter(id=_order_id)
+            _order.update(shipped=False, date_shipped=now)
+            messages.success(request, "Shipping Status updated")
+
         orders = Order.objects.filter(shipped=True)
         return render(request, 'payment/shipped_dash.html', {'orders':orders})
     else:
@@ -137,6 +146,14 @@ def shipped_dash(request):
 
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
+
+        if request.POST:
+            _order_id = request.POST['order_id']
+            now = datetime.datetime.now()
+            _order = Order.objects.filter(id=_order_id)
+            _order.update(shipped=True, date_shipped=now)
+            messages.success(request, "Shipping Status updated")
+
         orders = Order.objects.filter(shipped=False)
         return render(request, 'payment/not_shipped_dash.html', {'orders':orders})
     else:
@@ -148,6 +165,19 @@ def orders(request, pk):
     if request.user.is_authenticated and request.user.is_superuser:
         order = Order.objects.get(id=pk)
         order_items = OrderItem.objects.filter(order=pk)
+
+        if request.POST:
+            status = request.POST['shipping_status']
+            _order = Order.objects.filter(id=pk)
+
+            if status == 'true':
+                now = datetime.datetime.now()
+                _order.update(shipped=True, date_shipped=now)
+            else:
+                _order.update(shipped=False)
+            order = Order.objects.get(id=pk)
+            messages.success(request, "Shipping Status updated")
+
         return render(request, 'payment/orders.html', {'order':order, 'items': order_items})
     else:
         messages.success(request, "Access Denied")
