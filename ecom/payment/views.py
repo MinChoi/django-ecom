@@ -5,7 +5,7 @@ from cart.cart import Cart
 from django.contrib.auth.models import User
 from .form import ShippingForm, PaymentForm
 from .models import ShippingAddress, Order, OrderItem
-from store.models import Product
+from store.models import Product, Profile
 import datetime
 
 def process_order(request):
@@ -41,10 +41,14 @@ def process_order(request):
                 else:
                     price = product.price
 
+            # delete cart - session
             for key, value in quantities.items():
                 if int(key) == product.id:
                     create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
                     create_order_item.save()
+            # delete cart - DB
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            current_user.update(old_cart = '')
 
         else:
             new_order = Order(full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
