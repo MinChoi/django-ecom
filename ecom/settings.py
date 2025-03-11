@@ -1,11 +1,14 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 from django.conf.global_settings import MEDIA_URL, MEDIA_ROOT, STATICFILES_DIRS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# load environment variables
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -70,11 +73,30 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  'test_psql',
+        'USER': 'postgres',
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': 'database-1.cr80284so2bo.ap-southeast-2.rds.amazonaws.com',
+        'POST': '5432',
     }
 }
 
+# example of `postgresql`
+# DATABASES = {
+#   'default': {
+#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#     'NAME': 'DATABASE_NAME',
+#     'USER': 'USERNAME',
+#     'PASSWORD': 'PASSWORD',
+#     'HOST': 'END_POINT',
+#     'PORT': '3306',
+#   }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
