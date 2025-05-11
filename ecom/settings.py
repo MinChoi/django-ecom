@@ -73,30 +73,17 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
 
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'test_psql',
-        'USER': 'postgres',
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': 'database-1.cr80284so2bo.ap-southeast-2.rds.amazonaws.com',
-        'POST': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME':  'test_psql',
+        # 'USER': 'postgres',
+        # 'PASSWORD': os.environ.get('DB_PASSWORD'),
+        # 'HOST': 'database-1.cr80284so2bo.ap-southeast-2.rds.amazonaws.com',
+        # 'POST': '5432',
     }
 }
-
-# example of `postgresql`
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#     'NAME': 'DATABASE_NAME',
-#     'USER': 'USERNAME',
-#     'PASSWORD': 'PASSWORD',
-#     'HOST': 'END_POINT',
-#     'PORT': '3306',
-#   }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,6 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 STATICFILES_DIRS = ['static/']
 
 MEDIA_URL = 'media/'
