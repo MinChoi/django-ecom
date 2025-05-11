@@ -1,0 +1,55 @@
+name: Django Deployment to Vultr
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.VULTR_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 67.219.107.243 >> ~/.ssh/known_hosts
+
+
+    - name: Deploy to Vultr
+      run: |
+        ssh -i ~/.ssh/id_rsa linuxuser@67.219.107.243 << 'EOF'
+        
+          # change user
+          sudo su django
+        
+          #cd /root/my-django-app
+          cd /home/django/ecommerce
+
+          # Pull latest changes
+          git pull origin master
+
+          # Activate virtual environment
+          source /home/django/.venv/bin/activate
+
+          # Install dependencies
+          pip install -r requirements.txt
+
+          # Apply database migrations
+          python manage.py migrate
+
+          # Collect static files
+          python manage.py collectstatic --noinput
+
+          # back to sudo user
+          exit
+
+          # Restart Gunicorn and Nginx
+          sudo systemctl restart gunicorn-ecommerce
+          sudo systemctl restart nginx
+        EOF
