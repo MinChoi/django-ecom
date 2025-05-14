@@ -34,6 +34,13 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'payment',
+
+    # # connect base app
+    # 'base.apps.BaseConfig',
+
+    'rest_framework',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -116,19 +123,41 @@ USE_I18N = True
 USE_TZ = True
 
 
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/5.1/howto/static-files/
+#
+# STATIC_URL = '/static/'
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+# STATICFILES_DIRS = [BASE_DIR / 'static/']
+#
+# MEDIA_URL = 'media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#
+#
+# # Default primary key field type
+# # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+#
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/images/'
+MEDIA_ROOT = BASE_DIR / 'static/images'
+
+# added directly in live
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
-STATICFILES_DIRS = ['static/']
-
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# note: make api accessable
+CORS_ALLOW_ALL_ORIGINS = True
